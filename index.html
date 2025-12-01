@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="CSS.css">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <title>Distribucion</title>
+</head>
+
+<body>
+    <section class="Bienvenida">
+        <h1>Bienvenido Salvador Montiel</h1>
+    </section>
+    <section class="Integrales">
+        <div class="integral1">
+            <div class="contenedor">
+                <h2>Integral #1</h2>
+                <div>
+                    <p>
+                        \( \displaystyle
+                        \int_{a}^{b}
+                        \frac{1}{\delta\sqrt{2\pi}}
+                        e^{-\tfrac{1}{2}\left(\frac{x-\mu}{\delta}\right)^2}
+                        \,dx
+                        \)
+                    </p>
+                </div>
+            </div>
+
+            <div class="formulario">
+                <div class="inputs">
+                    <input type="number" placeholder="Ingresa el valor de A"></input>
+                    <input type="number" placeholder="Ingresa el valor de B"></input>
+                    <input type="number" placeholder="Ingresa el valor de Delta"></input>
+                    <input type="number" placeholder="Ingresa el valor de Miu"></input>
+                </div>
+
+                <button type="button" class="btn">
+                    <strong>Calcular</strong>
+                    <div id="container-stars">
+                        <div id="stars"></div>
+                    </div>
+
+                    <div id="glow">
+                        <div class="circle"></div>
+                        <div class="circle"></div>
+                    </div>
+                </button>
+            </div>
+
+            <div class="tabla">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Valor de A</td>
+                            <td>Valor de B</td>
+                            <td>Valor de Sigma</td>
+                            <td>Valor de Miu</td>
+                            <td>Valor de la integral</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+        <div class="integral2">
+            <div class="contenedor">
+                <h2>Integral #2</h2>
+                <div>
+                    <p>
+                        \( \displaystyle
+                        \int_{-6}^{b}
+                        \frac{1}{\sqrt{2\pi}}
+                        e^{-\tfrac{1}{2}z^2}
+                        \,dz
+                        \)
+                    </p>
+                </div>
+            </div>
+
+            <div class="formulario">
+
+                <button type="button" class="btn">
+                    <strong>Calcular</strong>
+                    <div id="container-stars">
+                        <div id="stars"></div>
+                    </div>
+
+                    <div id="glow">
+                        <div class="circle"></div>
+                        <div class="circle"></div>
+                    </div>
+                </button>
+            </div>
+
+            <div class="tabla">
+                <table>
+                    <thead>
+                        <tr>
+                            <td>Valor de B</td>
+                            <td>Valor de la integral</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                        
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+
+        </div>
+    </section>
+
+    <!-- JAVASCRIPT PRIMERA INTEGRAL-->
+    <script>
+        // --- Función para calcular la CDF de la normal estándar ---
+        function normalCDF(z) {
+            return (1.0 + erf(z / Math.sqrt(2))) / 2.0;
+        }
+
+        // --- Función error ---
+        function erf(x) {
+            const sign = (x >= 0) ? 1 : -1;
+            x = Math.abs(x);
+
+            const a1 = 0.254829592;
+            const a2 = -0.284496736;
+            const a3 = 1.421413741;
+            const a4 = -1.453152027;
+            const a5 = 1.061405429;
+            const p = 0.3275911;
+
+            let t = 1.0 / (1.0 + p * x);
+            let y = 1.0 - (((((a5 * t + a4) * t + a3) * t + a2) * t + a1) * t * Math.exp(-x * x));
+
+            return sign * y;
+        }
+
+        // --- Evento del botón Calcular ---
+        document.querySelector(".integral1 .btn").addEventListener("click", () => {
+            const inputs = document.querySelectorAll(".integral1 .inputs input");
+
+            let a = parseFloat(inputs[0].value);
+            let b = parseFloat(inputs[1].value);
+            let delta = parseFloat(inputs[2].value);
+            let mu = parseFloat(inputs[3].value);
+
+            if (isNaN(a) || isNaN(b) || isNaN(delta) || isNaN(mu)) {
+                alert("Por favor llena todos los campos.");
+                return;
+            }
+
+            // Convertimos los límites a Z
+            let za = (a - mu) / delta;
+            let zb = (b - mu) / delta;
+
+            // Calculamos la integral
+            let resultado = normalCDF(zb) - normalCDF(za);
+
+            // Agregar nueva fila sin borrar las anteriores
+            const tbody = document.querySelector(".integral1 tbody");
+
+            let nuevaFila = document.createElement("tr");
+            nuevaFila.innerHTML = `
+            <td>${a}</td>
+            <td>${b}</td>
+            <td>${delta}</td>
+            <td>${mu}</td>
+            <td>${resultado.toFixed(6)}</td>
+        `;
+
+            tbody.appendChild(nuevaFila);
+        });
+    </script>
+
+    <!--JAVASCRIPT SEGUNDA INTEGRAL-->
+    <script>
+
+        // --- Evento del botón Calcular ---
+        document.querySelector(".integral2 .btn").addEventListener("click", () => {
+            console.log("Se dio click muajaja")
+
+            let b = -5.98;
+
+            while (b <= 6) {
+
+                let resultado2 = (Math.sqrt(Math.PI)) / (Math.PI * Math.exp(1 / (2 * b)));
+
+                const tbody = document.querySelector(".integral2 tbody");
+
+                let nuevaFila = document.createElement("tr");
+                nuevaFila.innerHTML = `
+            <td>${b}</td>
+            <td>${resultado2.toFixed(6)}</td>
+        `;
+
+                tbody.appendChild(nuevaFila);
+
+                b = parseFloat((b + 0.02).toFixed(2));
+            }
+        });
+    </script>
+
+</body>
+
+</html>
