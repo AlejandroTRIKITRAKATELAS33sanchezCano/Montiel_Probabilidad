@@ -35,6 +35,7 @@
                     <input type="number" placeholder="Ingresa el valor de B"></input>
                     <input type="number" placeholder="Ingresa el valor de Delta"></input>
                     <input type="number" placeholder="Ingresa el valor de Miu"></input>
+                    <p>Recuerda que solo acepta valores numericos por ejemplo 2, 1 o e</p>
                 </div>
 
                 <button type="button" class="btn">
@@ -48,7 +49,9 @@
                         <div class="circle"></div>
                     </div>
                 </button>
+
             </div>
+
 
             <div class="tabla">
                 <table>
@@ -98,6 +101,18 @@
                         <div class="circle"></div>
                     </div>
                 </button>
+
+                <a href="./tabla_integral_normal.pdf" download="tabla_integral_normal.pdf" type="button" id="1" class="btn2 none">
+                    <strong>Descargar</strong>
+                    <div id="container-stars">
+                        <div id="stars"></div>
+                    </div>
+
+                    <div id="glow">
+                        <div class="circle"></div>
+                        <div class="circle"></div>
+                    </div>
+                </a>
             </div>
 
             <div class="tabla">
@@ -110,12 +125,11 @@
                     </thead>
                     <tbody>
                         <tr>
-                        
+
                         </tr>
                     </tbody>
                 </table>
             </div>
-
 
         </div>
     </section>
@@ -166,6 +180,11 @@
             // Calculamos la integral
             let resultado = normalCDF(zb) - normalCDF(za);
 
+            if (resultado < 0) {
+
+                alert("Tu integral es negativa, si estas usando esto para probabilidad ten cuidado");
+            }
+
             // Agregar nueva fila sin borrar las anteriores
             const tbody = document.querySelector(".integral1 tbody");
 
@@ -175,7 +194,7 @@
             <td>${b}</td>
             <td>${delta}</td>
             <td>${mu}</td>
-            <td>${resultado.toFixed(6)}</td>
+            <td>${resultado.toFixed(6) + " *"}</td>
         `;
 
             tbody.appendChild(nuevaFila);
@@ -190,23 +209,28 @@
             console.log("Se dio click muajaja")
 
             let b = -5.98;
+            const boton = document.getElementById('1');
 
             while (b <= 6) {
 
                 let resultado2 = (Math.sqrt(Math.PI)) / (Math.PI * Math.exp(1 / (2 * b)));
 
                 const tbody = document.querySelector(".integral2 tbody");
+                
 
                 let nuevaFila = document.createElement("tr");
                 nuevaFila.innerHTML = `
-            <td>${b}</td>
-            <td>${resultado2.toFixed(6)}</td>
-        `;
+                        <td>${b}</td>
+                        <td>${resultado2.toFixed(6)}</td>
+                    `;
 
                 tbody.appendChild(nuevaFila);
 
                 b = parseFloat((b + 0.02).toFixed(2));
             }
+
+            boton.classList.remove('none');
+
         });
     </script>
 
